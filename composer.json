@@ -1,0 +1,26 @@
+{
+    "name": "webcityro/larasearch",
+    "description": "Filters records in the database",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andrei Valcu",
+            "email": "andreivalcu@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "orchestra/testbench": "^6.2",
+        "laravel/legacy-factories": "^1.0.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Webcityro\\Larasearch\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Webcityro\\Larasearch\\Tests\\": "tests/"
+        }
+    }
+}
