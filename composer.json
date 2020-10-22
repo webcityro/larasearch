@@ -22,5 +22,12 @@
         "psr-4": {
             "Webcityro\\Larasearch\\Tests\\": "tests/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webcityro\\Larasearch\\LarasearchServiceProvider"
+            ]
+        }
     }
 }

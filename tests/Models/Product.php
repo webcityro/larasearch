@@ -1,6 +1,6 @@
 <?php
 
-namespace Webcityro\Larasearch\Models;
+namespace Webcityro\Larasearch\Tests\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
