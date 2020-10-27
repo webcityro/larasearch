@@ -9,7 +9,13 @@ use Webcityro\Larasearch\Tests\Repositories\Contracts\ProductRepositoryContract;
 class LarasearchServiceProvider extends ServiceProvider {
 
 	public function register(): void {
-		//
+		$this->commands([
+			\Webcityro\Larasearch\Console\Commands\MakeRequestCommand::class,
+			\Webcityro\Larasearch\Console\Commands\MakeRepositoryCommand::class,
+			\Webcityro\Larasearch\Console\Commands\MakeRepositoryContractCommand::class,
+			\Webcityro\Larasearch\Console\Commands\MakeQueryCommand::class,
+			\Webcityro\Larasearch\Console\Commands\MakeAllCommand::class,
+		]);
 	}
 
 	public function boot(): void {

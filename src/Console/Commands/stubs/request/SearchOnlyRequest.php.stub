@@ -1,12 +1,12 @@
 <?php
 
-namespace Webcityro\Larasearch\Tests\Http\Requests\Product;
+namespace DummyNamespace;
 
 use Webcityro\Larasearch\Http\Requests\SearchRequest;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class FetchRequest extends FormRequest implements SearchFormRequest {
+class DummyClass extends FormRequest implements SearchFormRequest {
 
 	use SearchRequest;
 
@@ -15,7 +15,7 @@ class FetchRequest extends FormRequest implements SearchFormRequest {
 	}
 
 	protected function orderByFields(): array {
-		return ['name', 'price'];
+		return ['name'];
 	}
 
 	protected function defaultOrderByField(): string {

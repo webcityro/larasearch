@@ -1,6 +1,6 @@
 <?php
 
-namespace Webcityro\Larasearch\Tests\Http\Requests\Product;
+namespace DummyNamespace;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Webcityro\Larasearch\Search\Payloads\Payload;
@@ -8,7 +8,7 @@ use Webcityro\Larasearch\Http\Requests\SearchRequest;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
 use Webcityro\Larasearch\Search\Payloads\MultiFieldsPayload;
 
-class MultiFieldsFetchRequest extends FormRequest implements SearchFormRequest {
+class DummyClass extends FormRequest implements SearchFormRequest {
 
 	use SearchRequest;
 
@@ -17,11 +17,11 @@ class MultiFieldsFetchRequest extends FormRequest implements SearchFormRequest {
 	}
 
 	public function searchFields(): array {
-		return ['name', 'price'];
+		return ['name'];
 	}
 
 	protected function orderByFields(): array {
-		return ['name', 'price'];
+		return ['name'];
 	}
 
 	protected function defaultOrderByField(): string {

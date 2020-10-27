@@ -1,0 +1,11 @@
+<?php
+
+namespace DummyNamespace;
+
+use Webcityro\Larasearch\Search\Queries\Search;
+use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
+
+interface DummyClass {
+
+	public function search(SearchFormRequest $request): Search;
+}
