@@ -18,7 +18,10 @@ class CommandsTest extends TestCase {
 		}
 
 		$this->assertFileDoesNotExist($productClass);
-		Artisan::call('larasearch:make:request ProductRequest');
+		$this->artisan('larasearch:make:request', [
+			'name' => 'ProductRequest'
+		])
+			->expectsOutput('Request created successfully.');
 		$this->assertFileExists($productClass);
 
 		$expectedContents = <<<CLASS
@@ -61,7 +64,11 @@ CLASS;
 		}
 
 		$this->assertFileDoesNotExist($productClass);
-		Artisan::call('larasearch:make:request ProductRequest -m');
+		$this->artisan('larasearch:make:request', [
+			'name' => 'ProductRequest',
+			'--multi' => true
+		])
+			->expectsOutput('Request created successfully.');
 		$this->assertFileExists($productClass);
 
 		$expectedContents = <<<CLASS
@@ -115,7 +122,12 @@ CLASS;
 		}
 
 		$this->assertFileDoesNotExist($productClass);
-		Artisan::call('larasearch:make:query ProductQuery --model=Models/Product');
+		$this->artisan('larasearch:make:query', [
+			'name' => 'ProductQuery',
+			'--model' => 'Models/Product'
+		])
+			->expectsOutput('Query created successfully.');
+
 		$this->assertFileExists($productClass);
 
 		$expectedContents = <<<CLASS
@@ -126,6 +138,7 @@ namespace App\Search\Queries;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
 use Webcityro\Larasearch\Search\Queries\EloquentSearch;
+use Webcityro\Larasearch\Search\Queries\Search;
 
 class ProductQuery extends Search {
 
@@ -160,7 +173,10 @@ CLASS;
 		}
 
 		$this->assertFileDoesNotExist($productRepositoryContract);
-		Artisan::call('larasearch:make:repository-contract ProductRepositoryContract');
+		$this->artisan('larasearch:make:repository-contract', [
+			'name' => 'ProductRepositoryContract'
+		])
+			->expectsOutput('Repository contract created successfully.');
 		$this->assertFileExists($productRepositoryContract);
 
 		$expectedContents = <<<CLASS
@@ -196,7 +212,12 @@ CLASS;
 
 		$this->assertFileDoesNotExist($productRepositoryClass);
 		$this->assertFileDoesNotExist($productRepositoryContract);
-		Artisan::call('larasearch:make:repository ProductRepository Search/Queries/ProductQuery --no-contract');
+		$this->artisan('larasearch:make:repository', [
+			'name' => 'ProductRepository',
+			'query' => 'Search/Queries/ProductQuery',
+			'--no-contract' => true
+		])
+			->expectsOutput('Repository created successfully.');
 		$this->assertFileExists($productRepositoryClass);
 		$this->assertFileDoesNotExist($productRepositoryContract);
 
@@ -222,6 +243,7 @@ CLASS;
 
 	/** @test */
 	public function a_repository_can_be_created_with_a_contract() {
+		$this->withoutExceptionHandling();
 		$productRepositoryContract = app_path('Repositories/Contracts/ProductRepositoryContract.php');
 		$productRepositoryClass = app_path('Repositories/Eloquent/ProductRepository.php');
 
@@ -235,7 +257,16 @@ CLASS;
 
 		$this->assertFileDoesNotExist($productRepositoryClass);
 		$this->assertFileDoesNotExist($productRepositoryContract);
-		Artisan::call('larasearch:make:repository ProductRepository Search/Queries/ProductQuery');
+
+		$this->artisan('larasearch:make:repository', [
+			'name' => 'ProductRepository',
+			'query' => 'Search/Queries/ProductQuery',
+		])
+			->expectsOutput("Repository created successfully.")
+			->expectsOutput('Repository contract created successfully.')
+			->expectsOutput("Add the next line to your service provider's boot method.")
+			->expectsOutput('$this->app->bind(\\App\\Repositories\\Contracts\\ProductRepositoryContract::class, \\App\\Repositories\\Eloquent\\ProductRepository::class);');
+
 		$this->assertFileExists($productRepositoryClass);
 		$this->assertFileExists($productRepositoryContract);
 
@@ -303,7 +334,13 @@ CLASS;
 		$this->assertFileDoesNotExist($productQueryClass);
 		$this->assertFileDoesNotExist($productRepositoryClass);
 		$this->assertFileDoesNotExist($productRepositoryContract);
-		Artisan::call('larasearch:make:all Product Models/Product');
+		$this->artisan('larasearch:make:all Product Models/Product')
+			->expectsOutput("Request created successfully.")
+			->expectsOutput("Query created successfully.")
+			->expectsOutput("Repository created successfully.")
+			->expectsOutput('Repository contract created successfully.')
+			->expectsOutput("Add the next line to your service provider's boot method.")
+			->expectsOutput('$this->app->bind(\\App\\Repositories\\Contracts\\ProductRepositoryContract::class, \\App\\Repositories\\Eloquent\\ProductRepository::class);');
 		$this->assertFileExists($productRequestClass);
 		$this->assertFileExists($productQueryClass);
 		$this->assertFileExists($productRepositoryClass);
@@ -345,6 +382,7 @@ namespace App\Search\Queries;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
 use Webcityro\Larasearch\Search\Queries\EloquentSearch;
+use Webcityro\Larasearch\Search\Queries\Search;
 
 class ProductQuery extends Search {
 

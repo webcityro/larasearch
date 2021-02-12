@@ -14,16 +14,17 @@ class MakeAllCommand extends Command {
 	protected $description = 'Generate all the larasearch specific search classes.';
 
 	public function handle() {
-		$this->callCommand('larasearch:make:request', 'Request', [
+		$this->call('larasearch:make:request', [
+			'name' => 'ProductRequest',
 			'--multi' => $this->option('multi')
 		]);
-		$this->callCommand('larasearch:make:query', 'Query', [
+		$this->call('larasearch:make:query', [
+			'name' => 'ProductQuery',
 			'--model' => $this->argument('model')
 		]);
-		$this->callCommand('larasearch:make:repository-contract', 'RepositoryContract');
-		$this->callCommand('larasearch:make:repository', 'Repository', [
+		$this->call('larasearch:make:repository', [
+			'name' => 'ProductRepository',
 			'query' => $this->getNamespaceString('Search\\Queries\\'.$this->argument('name').'Query'),
-			'--contract' => $this->argument('name').'RepositoryContract'
 		]);
 	}
 

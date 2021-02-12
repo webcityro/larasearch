@@ -4,7 +4,6 @@ namespace Webcityro\Larasearch\Console\Commands;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Console\GeneratorCommand;
-use Symfony\Component\Console\Output\StreamOutput;
 use Webcityro\Larasearch\Console\Commands\Traits\NamespaceResolver;
 
 class MakeRepositoryCommand extends GeneratorCommand {
@@ -16,6 +15,9 @@ class MakeRepositoryCommand extends GeneratorCommand {
 	protected $description = 'Generate a larasearch specific repository.';
 	protected $type = 'Repository';
 
+	protected $path;
+	protected $content;
+
 	protected function getStub() {
 		return __DIR__.'/stubs/repository/Eloquent/'.($this->option('no-contract') ? 'Repository.php.stub' : 'RepositoryWithContract.php.stub');
 	}
@@ -25,15 +27,26 @@ class MakeRepositoryCommand extends GeneratorCommand {
 	}
 
 	public function handle() {
-		if (!$this->option('no-contract') && !$this->option('contract')) {
-			Artisan::call('larasearch:make:repository-contract', [
-				'name' => $this->contractInput()
-			]);
-		}
-		$path = $this->getPath($this->qualifyClass($this->contractInput()));
+		$this->path = $this->getPath($this->qualifyClass($this->getNameInput()));
 
 		parent::handle();
+
+
+		$this->loadContent();
+		$this->makeContract();
+		$this->applyContract();
 		$this->applyQuery();
+		$this->saveContent();
+	}
+
+	private function makeContract() {
+		if ($this->option('no-contract') || $this->option('contract')) {
+			return;
+		}
+
+		$this->call('larasearch:make:repository-contract', [
+			'name' => $this->contractInput()
+		], $this->output);
 	}
 
 	private function contractInput() {
@@ -49,14 +62,24 @@ class MakeRepositoryCommand extends GeneratorCommand {
 		return ltrim($this->getNamespaceString('Repositories/Contracts/'.$this->contractInput()), '\\');
 	}
 
-	protected function applyQuery() {
-		$path = $this->getPath($this->qualifyClass($this->getNameInput()));
-		$content = str_replace('{{ querySearch }}', $this->getNamespaceString($this->argument('query')), file_get_contents($path));
-
-		if (!$this->option('no-contract')) {
-			$content = str_replace('{{ contractNamespace }}', $this->contractNamespace(), $content);
-			$content = str_replace('{{ contract }}', $this->contractName(), $content);
+	protected function applyContract() {
+		if ($this->option('no-contract')) {
+			return;
 		}
-		file_put_contents($path, $content);
+
+		$this->content = str_replace('{{ contractNamespace }}', $this->contractNamespace(), $this->content);
+		$this->content = str_replace('{{ contract }}', $this->contractName(), $this->content);
+	}
+
+	protected function applyQuery() {
+		$this->content = str_replace('{{ querySearch }}', $this->getNamespaceString($this->argument('query')), $this->content);
+	}
+
+	protected function loadContent() {
+		$this->content = file_get_contents($this->path);
+	}
+
+	protected function saveContent() {
+		file_put_contents($this->path, $this->content);
 	}
 }

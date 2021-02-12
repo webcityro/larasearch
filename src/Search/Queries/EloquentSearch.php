@@ -23,7 +23,9 @@ trait EloquentSearch {
 
 		if (!empty($this->params->search->fields)) {
 			foreach ($this->params->search->fields as $field => $value) {
-				$query = $this->filter($query, $field, $value);
+				if (!empty($value)) {
+					$query = $this->filter($query, $field, $value);
+				}
 			}
 		}
 

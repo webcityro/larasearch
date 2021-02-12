@@ -29,6 +29,6 @@ class Search implements Rule {
 	}
 
 	public function message() {
-		return trans('validation.custom.search');
+		return 'Invalid search field.';
 	}
 }

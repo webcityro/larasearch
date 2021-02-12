@@ -20,13 +20,9 @@ class MakeRepositoryContractCommand extends GeneratorCommand {
 	}
 
 	public function handle() {
-		$showMsg = !$this->alreadyExists($this->getNameInput());
-
 		parent::handle();
 
-		if ($showMsg) {
-			$this->info('Add the next line to your service provider\'s boot method.');
-			$this->info('$this->app->bind('.$this->getNameInput().'::class, '.str_replace('Contract', '', $this->getNameInput()).'::class);');
-		}
+		$this->info('Add the next line to your service provider\'s boot method.');
+		$this->info('$this->app->bind(\\'.$this->qualifyClass($this->getNameInput()).'::class, \\'.$this->rootNamespace().'Repositories\Eloquent\\'.str_replace('Contract', '', $this->getNameInput()).'::class);');
 	}
 }
