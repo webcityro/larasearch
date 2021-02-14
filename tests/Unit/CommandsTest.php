@@ -135,7 +135,6 @@ CLASS;
 
 namespace App\Search\Queries;
 
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
 use Webcityro\Larasearch\Search\Queries\EloquentSearch;
 use Webcityro\Larasearch\Search\Queries\Search;
@@ -379,7 +378,6 @@ CLASS;
 
 namespace App\Search\Queries;
 
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
 use Webcityro\Larasearch\Search\Queries\EloquentSearch;
 use Webcityro\Larasearch\Search\Queries\Search;
