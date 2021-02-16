@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 class Search implements Rule {
 
 	protected $fields = [];
+	protected $invalidFields = [];
 
 	public function __construct(array $fields) {
 		$this->fields = $fields;
@@ -20,7 +21,7 @@ class Search implements Rule {
 			foreach ($value as $field => $fieldValue) {
 				if (!in_array($field, $this->fields)) {
 					$passed = false;
-					break;
+					$this->invalidFields[] = $field;
 				}
 			}
 		}
@@ -29,6 +30,6 @@ class Search implements Rule {
 	}
 
 	public function message() {
-		return 'Invalid search field.';
+		return 'Invalid search field ('.implode(', ', $this->invalidFields).').';
 	}
 }
