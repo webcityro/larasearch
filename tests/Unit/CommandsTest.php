@@ -312,6 +312,7 @@ CLASS;
 		$productQueryClass = app_path('Search/Queries/ProductQuery.php');
 		$productRepositoryContract = app_path('Repositories/Contracts/ProductRepositoryContract.php');
 		$productRepositoryClass = app_path('Repositories/Eloquent/ProductRepository.php');
+		$productResourceClass = app_path('Http/Resources/ProductResource.php');
 
 		if (File::exists($productRequestClass)) {
 			unlink($productRequestClass);
@@ -329,10 +330,15 @@ CLASS;
 			unlink($productRepositoryClass);
 		}
 
+		if (File::exists($productResourceClass)) {
+			unlink($productResourceClass);
+		}
+
 		$this->assertFileDoesNotExist($productRequestClass);
 		$this->assertFileDoesNotExist($productQueryClass);
 		$this->assertFileDoesNotExist($productRepositoryClass);
 		$this->assertFileDoesNotExist($productRepositoryContract);
+		$this->assertFileDoesNotExist($productResourceClass);
 		$this->artisan('larasearch:make:all Product Models/Product')
 			->expectsOutput("Request created successfully.")
 			->expectsOutput("Query created successfully.")
@@ -344,6 +350,7 @@ CLASS;
 		$this->assertFileExists($productQueryClass);
 		$this->assertFileExists($productRepositoryClass);
 		$this->assertFileExists($productRepositoryContract);
+		$this->assertFileExists($productResourceClass);
 
 		$expectedRequestContents = <<<CLASS
 <?php
@@ -436,9 +443,34 @@ interface ProductRepositoryContract {
 
 CLASS;
 
+		$expectedResourceContents = <<<CLASS
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class ProductResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  \$request
+     * @return array
+     */
+    public function toArray(\$request)
+    {
+        return parent::toArray(\$request);
+    }
+}
+
+
+CLASS;
+
 		$this->assertStringEqualsFile($productRequestClass, $expectedRequestContents);
 		$this->assertStringEqualsFile($productQueryClass, $expectedQueryContents);
 		$this->assertStringEqualsFile($productRepositoryContract, $expectedRepositoryContractContents);
 		$this->assertStringEqualsFile($productRepositoryClass, $expectedRepositoryContents);
+		$this->assertStringEqualsFile($productResourceClass, $expectedResourceContents);
 	}
 }

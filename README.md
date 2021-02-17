@@ -11,4 +11,4 @@ php artisan larasearch:make:repository UserRepository Models/User
 php artisan make:resource UserResource
 
 Add the next line to your service provider's boot method.
-$this->app->bind(\App\Repositories\Contracts\UserRepositoryContract::class, \App\Repositories\Eloquent\UserRepositoryContract::class);
+$this->app->bind(\App\Repositories\Contracts\UserRepositoryContract::class, \App\Repositories\Eloquent\UserRepository::class);

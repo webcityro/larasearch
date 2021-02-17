@@ -15,24 +15,19 @@ class MakeAllCommand extends Command {
 
 	public function handle() {
 		$this->call('larasearch:make:request', [
-			'name' => 'ProductRequest',
+			'name' => $this->argument('name').'Request',
 			'--multi' => $this->option('multi')
 		]);
 		$this->call('larasearch:make:query', [
-			'name' => 'ProductQuery',
+			'name' => $this->argument('name').'Query',
 			'--model' => $this->argument('model')
 		]);
 		$this->call('larasearch:make:repository', [
-			'name' => 'ProductRepository',
+			'name' => $this->argument('name').'Repository',
 			'query' => $this->getNamespaceString('Search\\Queries\\'.$this->argument('name').'Query'),
 		]);
-	}
-
-	public function callCommand($command, $name = '', $args = []) {
-		Artisan::call($command, array_merge([
-			'name' => $this->argument('name').$name
-		], $args));
-
-		$this->info(Artisan::output());
+		$this->call('make:resource', [
+			'name' => $this->argument('name'). 'Resource',
+		]);
 	}
 }
