@@ -2,9 +2,9 @@
 
 namespace DummyNamespace;
 
-use Webcityro\Larasearch\Http\Requests\SearchRequest;
-use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
+use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
+use Webcityro\Larasearch\Http\Requests\SearchRequest;
 
 class DummyClass extends FormRequest implements SearchFormRequest {
 

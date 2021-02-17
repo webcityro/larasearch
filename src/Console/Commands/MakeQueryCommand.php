@@ -2,7 +2,6 @@
 
 namespace Webcityro\Larasearch\Console\Commands;
 
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Console\GeneratorCommand;
 use Webcityro\Larasearch\Console\Commands\Traits\NamespaceResolver;
 

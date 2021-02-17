@@ -29,9 +29,9 @@ class CommandsTest extends TestCase {
 
 namespace App\Http\Requests;
 
-use Webcityro\Larasearch\Http\Requests\SearchRequest;
-use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
+use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
+use Webcityro\Larasearch\Http\Requests\SearchRequest;
 
 class ProductRequest extends FormRequest implements SearchFormRequest {
 
@@ -77,10 +77,10 @@ CLASS;
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Webcityro\Larasearch\Search\Payloads\Payload;
-use Webcityro\Larasearch\Http\Requests\SearchRequest;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
+use Webcityro\Larasearch\Http\Requests\SearchRequest;
 use Webcityro\Larasearch\Search\Payloads\MultiFieldsPayload;
+use Webcityro\Larasearch\Search\Payloads\Payload;
 
 class ProductRequest extends FormRequest implements SearchFormRequest {
 
@@ -183,8 +183,8 @@ CLASS;
 
 namespace App\Repositories\Contracts;
 
-use Webcityro\Larasearch\Search\Queries\Search;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
+use Webcityro\Larasearch\Search\Queries\Search;
 
 interface ProductRepositoryContract {
 
@@ -225,8 +225,8 @@ CLASS;
 
 namespace App\Repositories\Eloquent;
 
-use Webcityro\Larasearch\Search\Queries\Search;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
+use Webcityro\Larasearch\Search\Queries\Search;
 
 class ProductRepository {
 
@@ -274,9 +274,9 @@ CLASS;
 
 namespace App\Repositories\Eloquent;
 
-use App\Repositories\Contracts\ProductRepositoryContract;
-use Webcityro\Larasearch\Search\Queries\Search;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
+use Webcityro\Larasearch\Search\Queries\Search;
+use App\Repositories\Contracts\ProductRepositoryContract;
 
 class ProductRepository implements ProductRepositoryContract {
 
@@ -292,8 +292,8 @@ CLASS;
 
 namespace App\Repositories\Contracts;
 
-use Webcityro\Larasearch\Search\Queries\Search;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
+use Webcityro\Larasearch\Search\Queries\Search;
 
 interface ProductRepositoryContract {
 
@@ -357,9 +357,9 @@ CLASS;
 
 namespace App\Http\Requests;
 
-use Webcityro\Larasearch\Http\Requests\SearchRequest;
-use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
+use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
+use Webcityro\Larasearch\Http\Requests\SearchRequest;
 
 class ProductRequest extends FormRequest implements SearchFormRequest {
 
@@ -415,9 +415,9 @@ CLASS;
 
 namespace App\Repositories\Eloquent;
 
-use App\Repositories\Contracts\ProductRepositoryContract;
-use Webcityro\Larasearch\Search\Queries\Search;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
+use Webcityro\Larasearch\Search\Queries\Search;
+use App\Repositories\Contracts\ProductRepositoryContract;
 
 class ProductRepository implements ProductRepositoryContract {
 
@@ -433,8 +433,8 @@ CLASS;
 
 namespace App\Repositories\Contracts;
 
-use Webcityro\Larasearch\Search\Queries\Search;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
+use Webcityro\Larasearch\Search\Queries\Search;
 
 interface ProductRepositoryContract {
 
@@ -463,7 +463,6 @@ class ProductResource extends JsonResource
         return parent::toArray(\$request);
     }
 }
-
 
 CLASS;
 

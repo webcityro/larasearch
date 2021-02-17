@@ -2,8 +2,8 @@
 
 namespace DummyNamespace;
 
-use Webcityro\Larasearch\Search\Queries\Search;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
+use Webcityro\Larasearch\Search\Queries\Search;
 
 class DummyClass {
 

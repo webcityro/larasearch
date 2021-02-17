@@ -2,9 +2,9 @@
 
 namespace DummyNamespace;
 
-use {{ contractNamespace }};
-use Webcityro\Larasearch\Search\Queries\Search;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
+use Webcityro\Larasearch\Search\Queries\Search;
+use {{ contractNamespace }};
 
 class DummyClass implements {{ contract }} {
 
