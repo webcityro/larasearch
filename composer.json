@@ -1,6 +1,7 @@
 {
     "name": "webcityro/larasearch",
-    "description": "Filters records in the database",
+    "description": "The easy way to do the \"R\" in CRUD.",
+    "version": "1.0.0",
     "license": "MIT",
     "authors": [
         {

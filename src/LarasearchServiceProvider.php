@@ -23,8 +23,9 @@ class LarasearchServiceProvider extends ServiceProvider {
 	public function boot(): void {
 		if ($this->app->runningUnitTests()) {
 			$this->app->bind(ProductRepositoryContract::class, ProductRepository::class);
-			$this->registerPublishing();
 		}
+
+		$this->registerPublishing();
 
 		View::share('perPage', config('larasearch.per_page'));
 		View::share('defaultPerPage', config('larasearch.default_per_page'));
