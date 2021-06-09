@@ -5,7 +5,8 @@ namespace DummyNamespace;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
 use Webcityro\Larasearch\Search\Queries\Search;
 
-interface DummyClass {
+interface DummyClass
+{
 
 	public function search(SearchFormRequest $request): Search;
 }

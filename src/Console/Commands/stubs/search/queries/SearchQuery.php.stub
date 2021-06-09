@@ -6,15 +6,18 @@ use Illuminate\Database\Eloquent\Builder;
 use Webcityro\Larasearch\Search\Queries\EloquentSearch;
 use Webcityro\Larasearch\Search\Queries\Search;
 
-class DummyClass extends Search {
+class DummyClass extends Search
+{
 
 	use EloquentSearch;
 
-	protected function query(): Builder {
+	protected function query(): Builder
+	{
 	 	return MyModel::query();
 	}
 
-	protected function filter(Builder $query, string $field, string $value): Builder {
+	protected function filter(Builder $query, string $field, string $value): Builder
+	{
 		// The $field variable contains the field name (column) if your using a Multi fields search or the string "search" if your using a single field search.
 
 		// if your using multi fields search.

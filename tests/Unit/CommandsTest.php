@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Webcityro\Larasearch\Tests\TestCase;
 
-class CommandsTest extends TestCase {
+class CommandsTest extends TestCase
+{
 
 	/** @test */
-	public function a_search_only_request_can_be_created() {
+	public function a_search_only_request_can_be_created()
+	{
 		$productClass = app_path('Http/Requests/ProductRequest.php');
 
 		if (File::exists($productClass)) {
@@ -33,19 +35,23 @@ use Illuminate\Foundation\Http\FormRequest;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
 use Webcityro\Larasearch\Http\Requests\SearchRequest;
 
-class ProductRequest extends FormRequest implements SearchFormRequest {
+class ProductRequest extends FormRequest implements SearchFormRequest
+{
 
 	use SearchRequest;
 
-	public function authorize(): bool {
+	public function authorize(): bool
+	{
 		return true;
 	}
 
-	protected function orderByFields(): array {
+	protected function orderByFields(): array
+	{
 		return ['name'];
 	}
 
-	protected function defaultOrderByField(): string {
+	protected function defaultOrderByField(): string
+	{
 		return 'name';
 	}
 }
@@ -56,7 +62,8 @@ CLASS;
 	}
 
 	/** @test */
-	public function a_multi_fields_search_request_can_be_created() {
+	public function a_multi_fields_search_request_can_be_created()
+	{
 		$productClass = app_path('Http/Requests/ProductRequest.php');
 
 		if (File::exists($productClass)) {
@@ -82,27 +89,33 @@ use Webcityro\Larasearch\Http\Requests\SearchRequest;
 use Webcityro\Larasearch\Search\Payloads\MultiFieldsPayload;
 use Webcityro\Larasearch\Search\Payloads\Payload;
 
-class ProductRequest extends FormRequest implements SearchFormRequest {
+class ProductRequest extends FormRequest implements SearchFormRequest
+{
 
 	use SearchRequest;
 
-	public function authorize(): bool {
+	public function authorize(): bool
+	{
 		return true;
 	}
 
-	public function searchFields(): array {
+	public function searchFields(): array
+	{
 		return ['name'];
 	}
 
-	protected function orderByFields(): array {
+	protected function orderByFields(): array
+	{
 		return ['name'];
 	}
 
-	protected function defaultOrderByField(): string {
+	protected function defaultOrderByField(): string
+	{
 		return 'name';
 	}
 
-	protected function payload(): Payload {
+	protected function payload(): Payload
+	{
 		return new MultiFieldsPayload(\$this->search ?? []);
 	}
 
@@ -114,7 +127,8 @@ CLASS;
 	}
 
 	/** @test */
-	public function a_query_can_be_created() {
+	public function a_query_can_be_created()
+	{
 		$productClass = app_path('Search/Queries/ProductQuery.php');
 
 		if (File::exists($productClass)) {
@@ -139,15 +153,18 @@ use Illuminate\Database\Eloquent\Builder;
 use Webcityro\Larasearch\Search\Queries\EloquentSearch;
 use Webcityro\Larasearch\Search\Queries\Search;
 
-class ProductQuery extends Search {
+class ProductQuery extends Search
+{
 
 	use EloquentSearch;
 
-	protected function query(): Builder {
+	protected function query(): Builder
+	{
 	 	return \App\Models\Product::query();
 	}
 
-	protected function filter(Builder \$query, string \$field, string \$value): Builder {
+	protected function filter(Builder \$query, string \$field, string \$value): Builder
+	{
 		// The \$field variable contains the field name (column) if your using a Multi fields search or the string "search" if your using a single field search.
 
 		// if your using multi fields search.
@@ -164,7 +181,8 @@ CLASS;
 	}
 
 	/** @test */
-	public function a_repository_contract_can_be_created() {
+	public function a_repository_contract_can_be_created()
+	{
 		$productRepositoryContract = app_path('Repositories/Contracts/ProductRepositoryContract.php');
 
 		if (File::exists($productRepositoryContract)) {
@@ -186,7 +204,8 @@ namespace App\Repositories\Contracts;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
 use Webcityro\Larasearch\Search\Queries\Search;
 
-interface ProductRepositoryContract {
+interface ProductRepositoryContract
+{
 
 	public function search(SearchFormRequest \$request): Search;
 }
@@ -197,7 +216,8 @@ CLASS;
 	}
 
 	/** @test */
-	public function a_repository_can_be_created_without_a_contract() {
+	public function a_repository_can_be_created_without_a_contract()
+	{
 		$productRepositoryContract = app_path('Repositories/Contracts/ProductRepositoryContract.php');
 		$productRepositoryClass = app_path('Repositories/Eloquent/ProductRepository.php');
 
@@ -228,9 +248,11 @@ namespace App\Repositories\Eloquent;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
 use Webcityro\Larasearch\Search\Queries\Search;
 
-class ProductRepository {
+class ProductRepository
+{
 
-	public function search(SearchFormRequest \$request): Search {
+	public function search(SearchFormRequest \$request): Search
+	{
 		return (new \App\Search\Queries\ProductQuery(\$request->requestParams(), \$request->requestOrder(), \$request->searchFields()));
 	}
 }
@@ -241,7 +263,8 @@ CLASS;
 	}
 
 	/** @test */
-	public function a_repository_can_be_created_with_a_contract() {
+	public function a_repository_can_be_created_with_a_contract()
+	{
 		$this->withoutExceptionHandling();
 		$productRepositoryContract = app_path('Repositories/Contracts/ProductRepositoryContract.php');
 		$productRepositoryClass = app_path('Repositories/Eloquent/ProductRepository.php');
@@ -278,9 +301,11 @@ use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
 use Webcityro\Larasearch\Search\Queries\Search;
 use App\Repositories\Contracts\ProductRepositoryContract;
 
-class ProductRepository implements ProductRepositoryContract {
+class ProductRepository implements ProductRepositoryContract
+{
 
-	public function search(SearchFormRequest \$request): Search {
+	public function search(SearchFormRequest \$request): Search
+	{
 		return (new \App\Search\Queries\ProductQuery(\$request->requestParams(), \$request->requestOrder(), \$request->searchFields()));
 	}
 }
@@ -295,7 +320,8 @@ namespace App\Repositories\Contracts;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
 use Webcityro\Larasearch\Search\Queries\Search;
 
-interface ProductRepositoryContract {
+interface ProductRepositoryContract
+{
 
 	public function search(SearchFormRequest \$request): Search;
 }
@@ -307,7 +333,8 @@ CLASS;
 	}
 
 	/** @test */
-	public function all_the_necessary_classes_can_be_created_with_one_command() {
+	public function all_the_necessary_classes_can_be_created_with_one_command()
+	{
 		$productRequestClass = app_path('Http/Requests/ProductRequest.php');
 		$productQueryClass = app_path('Search/Queries/ProductQuery.php');
 		$productRepositoryContract = app_path('Repositories/Contracts/ProductRepositoryContract.php');
@@ -361,19 +388,23 @@ use Illuminate\Foundation\Http\FormRequest;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
 use Webcityro\Larasearch\Http\Requests\SearchRequest;
 
-class ProductRequest extends FormRequest implements SearchFormRequest {
+class ProductRequest extends FormRequest implements SearchFormRequest
+{
 
 	use SearchRequest;
 
-	public function authorize(): bool {
+	public function authorize(): bool
+	{
 		return true;
 	}
 
-	protected function orderByFields(): array {
+	protected function orderByFields(): array
+	{
 		return ['name'];
 	}
 
-	protected function defaultOrderByField(): string {
+	protected function defaultOrderByField(): string
+	{
 		return 'name';
 	}
 }
@@ -389,15 +420,18 @@ use Illuminate\Database\Eloquent\Builder;
 use Webcityro\Larasearch\Search\Queries\EloquentSearch;
 use Webcityro\Larasearch\Search\Queries\Search;
 
-class ProductQuery extends Search {
+class ProductQuery extends Search
+{
 
 	use EloquentSearch;
 
-	protected function query(): Builder {
+	protected function query(): Builder
+	{
 	 	return \App\Models\Product::query();
 	}
 
-	protected function filter(Builder \$query, string \$field, string \$value): Builder {
+	protected function filter(Builder \$query, string \$field, string \$value): Builder
+	{
 		// The \$field variable contains the field name (column) if your using a Multi fields search or the string "search" if your using a single field search.
 
 		// if your using multi fields search.
@@ -419,9 +453,11 @@ use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
 use Webcityro\Larasearch\Search\Queries\Search;
 use App\Repositories\Contracts\ProductRepositoryContract;
 
-class ProductRepository implements ProductRepositoryContract {
+class ProductRepository implements ProductRepositoryContract
+{
 
-	public function search(SearchFormRequest \$request): Search {
+	public function search(SearchFormRequest \$request): Search
+	{
 		return (new \App\Search\Queries\ProductQuery(\$request->requestParams(), \$request->requestOrder(), \$request->searchFields()));
 	}
 }
@@ -436,7 +472,8 @@ namespace App\Repositories\Contracts;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
 use Webcityro\Larasearch\Search\Queries\Search;
 
-interface ProductRepositoryContract {
+interface ProductRepositoryContract
+{
 
 	public function search(SearchFormRequest \$request): Search;
 }

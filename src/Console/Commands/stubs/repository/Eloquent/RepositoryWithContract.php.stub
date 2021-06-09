@@ -6,9 +6,11 @@ use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
 use Webcityro\Larasearch\Search\Queries\Search;
 use {{ contractNamespace }};
 
-class DummyClass implements {{ contract }} {
+class DummyClass implements {{ contract }}
+{
 
-	public function search(SearchFormRequest $request): Search {
+	public function search(SearchFormRequest $request): Search
+	{
 		return (new {{ querySearch }}($request->requestParams(), $request->requestOrder(), $request->searchFields()));
 	}
 }

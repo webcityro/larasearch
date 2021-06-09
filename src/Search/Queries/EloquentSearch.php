@@ -1,16 +1,20 @@
 <?php
+
 namespace Webcityro\Larasearch\Search\Queries;
 
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
 
-trait EloquentSearch {
+trait EloquentSearch
+{
 
-    public function total(): int {
+	public function total(): int
+	{
 		return $this->queryWithoutLimit()->count('id');
 	}
 
-	protected function queryWithFilter(): Builder {
+	protected function queryWithFilter(): Builder
+	{
 		$query = $this->query();
 
 		if (!$this->params->search->hasFilter()) {
@@ -32,19 +36,22 @@ trait EloquentSearch {
 		return $query;
 	}
 
-	protected function queryWithoutLimit(): Builder {
+	protected function queryWithoutLimit(): Builder
+	{
 		return $this->queryWithFilter()->orderBy($this->orderBy->field, $this->orderBy->direction);
 	}
 
 	abstract protected function query(): Builder;
 
-	abstract protected function filter(Builder $query, string $field, string $value): Builder;
+	abstract protected function filter(Builder $query, string $field, $value): Builder;
 
-	public function records(): Collection {
-        return $this->limit($this->queryWithoutLimit())->get();
-    }
+	public function records(): Collection
+	{
+		return $this->limit($this->queryWithoutLimit())->get();
+	}
 
-	protected function limit(Builder $query): Builder {
+	protected function limit(Builder $query): Builder
+	{
 		return $query->take($this->params->perPage)->skip(($this->params->page - 1) * $this->params->perPage);
 	}
 }

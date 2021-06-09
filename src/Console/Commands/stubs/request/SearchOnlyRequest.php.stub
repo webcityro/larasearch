@@ -6,19 +6,23 @@ use Illuminate\Foundation\Http\FormRequest;
 use Webcityro\Larasearch\Http\Requests\SearchFormRequest;
 use Webcityro\Larasearch\Http\Requests\SearchRequest;
 
-class DummyClass extends FormRequest implements SearchFormRequest {
+class DummyClass extends FormRequest implements SearchFormRequest
+{
 
 	use SearchRequest;
 
-	public function authorize(): bool {
+	public function authorize(): bool
+	{
 		return true;
 	}
 
-	protected function orderByFields(): array {
+	protected function orderByFields(): array
+	{
 		return ['name'];
 	}
 
-	protected function defaultOrderByField(): string {
+	protected function defaultOrderByField(): string
+	{
 		return 'name';
 	}
 }
