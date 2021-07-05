@@ -150,6 +150,7 @@ CLASS;
 namespace App\Search\Queries;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Webcityro\Larasearch\Search\Queries\EloquentSearch;
 use Webcityro\Larasearch\Search\Queries\Search;
 
@@ -163,7 +164,7 @@ class ProductQuery extends Search
 	 	return \App\Models\Product::query();
 	}
 
-	protected function filter(Builder \$query, string \$field, string \$value): Builder
+	protected function filter(Builder|QueryBuilder \$query, string \$field, string \$value): Builder
 	{
 		// The \$field variable contains the field name (column) if your using a Multi fields search or the string "search" if your using a single field search.
 
@@ -417,6 +418,7 @@ CLASS;
 namespace App\Search\Queries;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Webcityro\Larasearch\Search\Queries\EloquentSearch;
 use Webcityro\Larasearch\Search\Queries\Search;
 
@@ -430,7 +432,7 @@ class ProductQuery extends Search
 	 	return \App\Models\Product::query();
 	}
 
-	protected function filter(Builder \$query, string \$field, string \$value): Builder
+	protected function filter(Builder|QueryBuilder \$query, string \$field, string \$value): Builder
 	{
 		// The \$field variable contains the field name (column) if your using a Multi fields search or the string "search" if your using a single field search.
 

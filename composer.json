@@ -1,7 +1,7 @@
 {
     "name": "webcityro/larasearch",
     "description": "The easy way to do the \"R\" in CRUD.",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "license": "MIT",
     "authors": [
         {
