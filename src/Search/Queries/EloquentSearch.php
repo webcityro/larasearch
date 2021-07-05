@@ -44,7 +44,7 @@ trait EloquentSearch
 
 	abstract protected function query(): Builder|QueryBuilder;
 
-	abstract protected function filter(Builder $query, string $field, $value): Builder;
+	abstract protected function filter(Builder|QueryBuilder $query, string $field, $value): Builder;
 
 	public function records(): Collection
 	{
