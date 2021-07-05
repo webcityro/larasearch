@@ -4,6 +4,7 @@ namespace Webcityro\Larasearch\Search\Queries;
 
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 trait EloquentSearch
 {
@@ -41,7 +42,7 @@ trait EloquentSearch
 		return $this->queryWithFilter()->orderBy($this->orderBy->field, $this->orderBy->direction);
 	}
 
-	abstract protected function query(): Builder;
+	abstract protected function query(): Builder|QueryBuilder;
 
 	abstract protected function filter(Builder $query, string $field, $value): Builder;
 
