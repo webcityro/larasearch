@@ -9,15 +9,17 @@ use Illuminate\Validation\Rule;
 use Webcityro\Larasearch\Search\Payloads\Payload;
 use Webcityro\Larasearch\Search\Payloads\SearchOnlyPayload;
 
-trait SearchRequest {
+trait SearchRequest
+{
 
-	public function rules(): array {
+	public function rules(): array
+	{
 		return array_merge([
 			'page' => 'required|integer',
 			'order_by' => 'required|string',
 			'per_page' => [
 				'required',
-				Rule::in(config('larasearch.per_page'))
+				Rule::in([-1] + config('larasearch.per_page'))
 			],
 			'order_field' => [
 				Rule::in($this->orderByFields())
@@ -25,10 +27,11 @@ trait SearchRequest {
 			'order_direction' => [
 				Rule::in(['asc', 'desc'])
 			]
-			], $this->searchParams());
+		], $this->searchParams());
 	}
 
-	protected function searchParams(): array {
+	protected function searchParams(): array
+	{
 		return [
 			'search' => empty($this->searchFields()) ? [
 				'present',
@@ -42,7 +45,8 @@ trait SearchRequest {
 		];
 	}
 
-	public function searchFields(): array {
+	public function searchFields(): array
+	{
 		return [];
 	}
 
@@ -50,13 +54,15 @@ trait SearchRequest {
 
 	abstract protected function defaultOrderByField(): string;
 
-	protected function defaultOrderByDirection(): string {
+	protected function defaultOrderByDirection(): string
+	{
 		return 'asc';
 	}
 
-	protected function prepareForValidation(): void	{
+	protected function prepareForValidation(): void
+	{
 		$this->order_by = $this->order_by ??
-			$this->defaultOrderByField().':'.$this->defaultOrderByDirection();
+			$this->defaultOrderByField() . ':' . $this->defaultOrderByDirection();
 
 		[$order, $direction] = explode(':', $this->order_by);
 
@@ -71,15 +77,18 @@ trait SearchRequest {
 		}
 	}
 
-	public function requestParams(): Params {
+	public function requestParams(): Params
+	{
 		return new Params($this->payload(), $this->per_page, $this->page, $this->order_by);
 	}
 
-	protected function payload(): Payload {
+	protected function payload(): Payload
+	{
 		return new SearchOnlyPayload($this->search ?? null);
 	}
 
-	public function requestOrder(): OrderBy {
+	public function requestOrder(): OrderBy
+	{
 		return new OrderBy($this->order_field, $this->order_direction);
 	}
 }

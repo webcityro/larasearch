@@ -59,7 +59,7 @@ abstract class Search
 
 	protected function lastPage(int $total): int
 	{
-		return ceil($total / $this->params->perPage) ?: 1;
+		return $this->params->perPage == -1 ? 1 : (ceil($total / $this->params->perPage) ?: 1);
 	}
 
 	protected function prevPage(): ?int

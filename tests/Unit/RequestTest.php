@@ -13,11 +13,13 @@ use Webcityro\Larasearch\Tests\Repositories\Eloquent\ProductRepository;
 use Webcityro\Larasearch\Tests\Http\Resources\Product as ProductResource;
 use Webcityro\Larasearch\Tests\Http\Requests\Product\MultiFieldsFetchRequest;
 
-class RequestTest extends TestCase {
+class RequestTest extends TestCase
+{
 
 	use RefreshDatabase;
 
-	protected function setUp(): void {
+	protected function setUp(): void
+	{
 		parent::setUp();
 
 		config(['larasearch.per_page' => [1, 2, 3]]);
@@ -25,20 +27,23 @@ class RequestTest extends TestCase {
 	}
 
 	/** @test */
-	public function a_product_can_be_created_with_the_factory() {
+	public function a_product_can_be_created_with_the_factory()
+	{
 		$product = factory(Product::class, 1)->create();
 		$this->assertCount(1, Product::all());
 	}
 
 	/** @test */
-	public function validation_fails_with_empty_request() {
+	public function validation_fails_with_empty_request()
+	{
 		try {
 			$request = new FetchRequest([]);
 			$request
 				->setContainer(app())
 				->setRedirector(app(Redirector::class))
 				->validateResolved();
-		} catch (ValidationException $ex) {}
+		} catch (ValidationException $ex) {
+		}
 
 		$this->assertJsonStringEqualsJsonString(json_encode([
 			'search' => [__('validation.present', ['attribute' => 'search'])],
@@ -49,7 +54,8 @@ class RequestTest extends TestCase {
 	}
 
 	/** @test */
-	public function validation_fails_with_invalid_values() {
+	public function validation_fails_with_invalid_values()
+	{
 		try {
 			$request = new FetchRequest([
 				'search' => json_encode([]),
@@ -61,7 +67,8 @@ class RequestTest extends TestCase {
 				->setContainer(app())
 				->setRedirector(app(Redirector::class))
 				->validateResolved();
-		} catch (ValidationException $ex) {}
+		} catch (ValidationException $ex) {
+		}
 
 		$this->assertJsonStringEqualsJsonString(json_encode([
 			'order_field' => [__('validation.in', ['attribute' => 'order field'])],
@@ -72,7 +79,8 @@ class RequestTest extends TestCase {
 	}
 
 	/** @test */
-	public function returns_records_with_default_filter() {
+	public function returns_records_with_default_filter()
+	{
 		$this->withoutExceptionHandling();
 		$products = factory(Product::class, 15)->create()->sortBy('name');
 
@@ -87,12 +95,14 @@ class RequestTest extends TestCase {
 				->setContainer(app())
 				->setRedirector(app(Redirector::class))
 				->validateResolved();
-		} catch (ValidationException $ex) {}
+		} catch (ValidationException $ex) {
+		}
 
 		$records = $this->formatRecords($products, 0, 1);
 
 		$collection = new SearchCollection(
-			(new ProductRepository)->search($request), ProductResource::class
+			(new ProductRepository)->search($request),
+			ProductResource::class
 		);
 
 		$this->assertJsonStringEqualsJsonString(json_encode([
@@ -113,9 +123,10 @@ class RequestTest extends TestCase {
 	}
 
 	/** @test */
-	public function returns_filtered_records_with_search_only_request() {
+	public function returns_filtered_records_with_search_only_request()
+	{
 		$this->withoutExceptionHandling();
-		$products = $this->create17Products();
+		$products = $this->create7Products();
 
 		try {
 			$request = new FetchRequest([
@@ -128,17 +139,20 @@ class RequestTest extends TestCase {
 				->setContainer(app())
 				->setRedirector(app(Redirector::class))
 				->validateResolved();
-		} catch (ValidationException $ex) {}
+		} catch (ValidationException $ex) {
+		}
 
 		$collection = new SearchCollection(
-			(new ProductRepository)->search($request), ProductResource::class
+			(new ProductRepository)->search($request),
+			ProductResource::class
 		);
 
 		$records = $products->whereIn('id', [1, 2, 3, 4, 6])->map(function (Product $product) {
-			return array_merge($product->only('id', 'name', 'price'),
+			return array_merge(
+				$product->only('id', 'name', 'price'),
 				[
-					'edit_url' => 'product/'.$product->id.'/edit',
-					'destroy_url' => 'product/destroy/'.$product->id
+					'edit_url' => 'product/' . $product->id . '/edit',
+					'destroy_url' => 'product/destroy/' . $product->id
 				]
 			);
 		})->sortByDesc('price')->skip(0)->take(2)->values()->toArray();
@@ -161,7 +175,8 @@ class RequestTest extends TestCase {
 	}
 
 	/** @test */
-	public function default_filter_works_with_empty_array_as_tha_search_param() {
+	public function default_filter_works_with_empty_array_as_tha_search_param()
+	{
 		$this->withoutExceptionHandling();
 		$products = factory(Product::class, 15)->create()->sortBy('name');
 
@@ -176,12 +191,14 @@ class RequestTest extends TestCase {
 				->setContainer(app())
 				->setRedirector(app(Redirector::class))
 				->validateResolved();
-		} catch (ValidationException $ex) {}
+		} catch (ValidationException $ex) {
+		}
 
 		$records = $this->formatRecords($products, 0, 1);
 
 		$collection = new SearchCollection(
-			(new ProductRepository)->search($request), ProductResource::class
+			(new ProductRepository)->search($request),
+			ProductResource::class
 		);
 
 		$this->assertJsonStringEqualsJsonString(json_encode([
@@ -202,7 +219,8 @@ class RequestTest extends TestCase {
 	}
 
 	/** @test */
-	public function overwrites_last_page_if_current_page_exceeds_number_of_available_pages() {
+	public function overwrites_last_page_if_current_page_exceeds_number_of_available_pages()
+	{
 		$this->withoutExceptionHandling();
 		$products = factory(Product::class, 15)->create()->sortBy('name');
 
@@ -217,12 +235,14 @@ class RequestTest extends TestCase {
 				->setContainer(app())
 				->setRedirector(app(Redirector::class))
 				->validateResolved();
-		} catch (ValidationException $ex) {}
+		} catch (ValidationException $ex) {
+		}
 
 		$records = $this->formatRecords($products, 14, 1);
 
 		$collection = new SearchCollection(
-			(new ProductRepository)->search($request), ProductResource::class
+			(new ProductRepository)->search($request),
+			ProductResource::class
 		);
 
 		$this->assertJsonStringEqualsJsonString(json_encode([
@@ -243,9 +263,10 @@ class RequestTest extends TestCase {
 	}
 
 	/** @test */
-	public function returns_filtered_records_with_multi_fields_search() {
+	public function returns_filtered_records_with_multi_fields_search()
+	{
 		$this->withoutExceptionHandling();
-		$products = $this->create17Products();
+		$products = $this->create7Products();
 
 		try {
 			$request = new MultiFieldsFetchRequest([
@@ -261,20 +282,23 @@ class RequestTest extends TestCase {
 				->setContainer(app())
 				->setRedirector(app(Redirector::class))
 				->validateResolved();
-		} catch (ValidationException $ex) {}
+		} catch (ValidationException $ex) {
+		}
 
 		$collection = new SearchCollection(
-			(new ProductRepository)->search($request), ProductResource::class
+			(new ProductRepository)->search($request),
+			ProductResource::class
 		);
 
 		$records = $products->whereIn('id', [2, 3])->map(function (Product $product) {
-			return array_merge($product->only('id', 'name', 'price'),
+			return array_merge(
+				$product->only('id', 'name', 'price'),
 				[
-					'edit_url' => 'product/'.$product->id.'/edit',
-					'destroy_url' => 'product/destroy/'.$product->id
+					'edit_url' => 'product/' . $product->id . '/edit',
+					'destroy_url' => 'product/destroy/' . $product->id
 				]
 			);
-		})->sortByDesc('price')->skip(0)->take(2)->values()->toArray();
+		})->sortBy('name')->values()->toArray();
 
 		$this->assertJsonStringEqualsJsonString(json_encode([
 			'params' => [
@@ -296,7 +320,66 @@ class RequestTest extends TestCase {
 		]), $collection->toJson());
 	}
 
-	private function create17Products()	{
+	/** @test */
+	public function returns_records_without_pagination()
+	{
+		$this->withoutExceptionHandling();
+		$products = $this->create7Products();
+
+		try {
+			$request = new MultiFieldsFetchRequest([
+				'search' => json_encode([
+					'name' => '',
+					'price' => ''
+				]),
+				'per_page' => -1,
+				'page' => 1,
+				'order_by' => 'name:asc'
+			]);
+			$request
+				->setContainer(app())
+				->setRedirector(app(Redirector::class))
+				->validateResolved();
+		} catch (ValidationException $ex) {
+		}
+
+		$collection = new SearchCollection(
+			(new ProductRepository)->search($request),
+			ProductResource::class
+		);
+
+		$records = $products->map(function (Product $product) {
+			return array_merge(
+				$product->only('id', 'name', 'price'),
+				[
+					'edit_url' => 'product/' . $product->id . '/edit',
+					'destroy_url' => 'product/destroy/' . $product->id
+				]
+			);
+		})->sortBy('name')->values()->toArray();
+
+		$this->assertJsonStringEqualsJsonString(json_encode([
+			'params' => [
+				'search' => [
+					'name' => '',
+					'price' => ''
+				],
+				'per_page' => -1,
+				'page' => 1,
+				'order_by' => 'name:asc'
+			],
+			'meta' => [
+				'total' => 7,
+				'prev_page' => null,
+				'next_page' => null,
+				'last_page' => 1,
+			],
+			'records' => $records,
+		]), $collection->toJson());
+	}
+
+	private function create7Products()
+	{
 		return collect([
 			factory(Product::class)->create([
 				'id' => 1, 'name' => 'Trek Remedy 7 27.5', 'price' => '2200.00'
@@ -322,15 +405,16 @@ class RequestTest extends TestCase {
 		]);
 	}
 
-	private function formatRecords($products, $skip, $take) {
+	private function formatRecords($products, $skip, $take)
+	{
 		return $products->skip($skip)->take($take)->map(function (Product $product) {
-			return array_merge($product->only('id', 'name', 'price'),
+			return array_merge(
+				$product->only('id', 'name', 'price'),
 				[
-					'edit_url' => 'product/'.$product->id.'/edit',
-					'destroy_url' => 'product/destroy/'.$product->id
+					'edit_url' => 'product/' . $product->id . '/edit',
+					'destroy_url' => 'product/destroy/' . $product->id
 				]
 			);
 		})->values()->toArray();
 	}
-
 }

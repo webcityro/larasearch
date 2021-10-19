@@ -28,7 +28,7 @@ trait EloquentSearch
 
 		if (!empty($this->params->search->fields)) {
 			foreach ($this->params->search->fields as $field => $value) {
-				if (!empty($value)) {
+				if ($value != '') {
 					$query = $this->filter($query, $field, $value);
 				}
 			}
@@ -53,6 +53,6 @@ trait EloquentSearch
 
 	protected function limit(Builder $query): Builder
 	{
-		return $query->take($this->params->perPage)->skip(($this->params->page - 1) * $this->params->perPage);
+		return $this->params->perPage == -1 ? $query :  $query->take($this->params->perPage)->skip(($this->params->page - 1) * $this->params->perPage);
 	}
 }
