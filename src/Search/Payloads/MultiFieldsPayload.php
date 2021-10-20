@@ -24,11 +24,16 @@ class MultiFieldsPayload extends Payload
 		$found = false;
 
 		foreach ($this->fields as $value) {
-			if ($value !== '') {
+			if ($this->isFieldEmpty($value)) {
 				$found = true;
 				break;
 			}
 		}
 		return (bool)$found;
+	}
+
+	public function isFieldEmpty($value): bool
+	{
+		return (is_array($value) && empty($value)) || $value === '';
 	}
 }
