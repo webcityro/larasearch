@@ -19,7 +19,7 @@ trait SearchRequest
 			'order_by' => 'required|string',
 			'per_page' => [
 				'required',
-				Rule::in([-1] + config('larasearch.per_page'))
+				Rule::in(array_merge([-1], config('larasearch.per_page')))
 			],
 			'order_field' => [
 				Rule::in($this->orderByFields())
