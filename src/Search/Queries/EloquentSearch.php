@@ -8,6 +8,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 
 trait EloquentSearch
 {
+	protected Builder|QueryBuilder $queryWithFilter;
 
 	public function total(): int
 	{
@@ -16,23 +17,27 @@ trait EloquentSearch
 
 	protected function queryWithFilter(): Builder
 	{
-		$query = $this->query();
+		if (!empty($this->queryWithFilter)) {
+			return $this->queryWithFilter;
+		}
+
+		$this->queryWithFilter = $this->query();
 
 		if (!$this->params->search->hasFilter()) {
-			return $query;
+			return $this->queryWithFilter;
 		}
 
 		if (!$this->hasMultiFields()) {
-			return $this->filter($query, 'search', $this->params->search->search);
+			return $this->filter($this->queryWithFilter, 'search', $this->params->search->search);
 		}
 
 		foreach ($this->params->search->fields as $field => $value) {
 			if (!$this->params->search->isFieldEmpty($value)) {
-				$query = $this->filter($query, $field, $value);
+				$this->queryWithFilter = $this->filter($this->queryWithFilter, $field, $value);
 			}
 		}
 
-		return $query;
+		return $this->queryWithFilter;
 	}
 
 	protected function queryWithoutLimit(): Builder
