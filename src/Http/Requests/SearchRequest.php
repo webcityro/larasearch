@@ -72,7 +72,7 @@ trait SearchRequest
 		$this->per_page = (int)($this->per_page ?? config('system.default_per_page'));
 		$this->page = (int)($this->page ?? 1);
 
-		if (isset($this->search) && !empty($this->searchFields())) {
+		if (!empty($this->search) && !empty($this->searchFields()) && !is_array($this->search)) {
 			$this->offsetSet('search', json_decode($this->search, true));
 		}
 	}
